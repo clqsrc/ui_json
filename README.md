@@ -36,7 +36,7 @@ View_SetRect(view, rect)
 ```
 
 ```
-//vcl 兼容的顶对齐 //现在不就当再用这个函数
+//vcl 兼容的顶对齐 //现在不应当再用这个函数
 function UI_AlignTop(view:any) 
 ```
 
