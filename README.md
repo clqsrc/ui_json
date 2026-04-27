@@ -46,6 +46,73 @@ function UI_AlignTop(view:any)
 
 
 
+--------------------------------------------------------
+
+2.控件一般用对齐就能实现大部分情况了，并不需要布局。目前精简为只定义控件的位置信息就可以了，再加少量扩展属性。
+
+当然实际上复杂的控件应该是有自己的更多属性的。
+
+基本信息示例如下:
+
+```
+{
+    "name": "DIV",
+    "id": "VForm_t1",
+    "top": "40",
+    "alignTop": "parentView",
+    "ui_marginTop": "40",
+    "left": "111",
+    "alignLeft": "parentView",
+    "ui_marginLeft": "111",
+    "right": "590",
+    "alignRight": "",
+    "ui_marginRight": "228",
+    "bottom": "281",
+    "alignBottom": "",
+    "ui_marginBottom": "216",
+    "children": [
+        {
+            "name": "DIV",
+            "id": "uiPanel1",
+            "top": "44",
+            "alignTop": "parentView",
+            "ui_marginTop": "44",
+            "left": "193",
+            "alignLeft": "parentView",
+            "ui_marginLeft": "193",
+            "right": "358",
+            "alignRight": "",
+            "ui_marginRight": "121",
+            "bottom": "95",
+            "alignBottom": "",
+            "ui_marginBottom": "146",
+            "text": "uiPanel1",
+            "back_color": "#444444",
+            "children": []
+        },
+        {
+            "name": "DIV",
+            "id": "btnOpen",
+            "top": "28",
+            "alignTop": "parentView",
+            "ui_marginTop": "28",
+            "left": "37",
+            "alignLeft": "parentView",
+            "ui_marginLeft": "37",
+            "right": "113",
+            "alignRight": "",
+            "ui_marginRight": "366",
+            "bottom": "63",
+            "alignBottom": "",
+            "ui_marginBottom": "178",
+            "children": []
+        }
+    ]
+}
+
+```
+
+
 
 
 
