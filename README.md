@@ -148,6 +148,16 @@ func UI_GetFromID()
 func UI_Get_ID()
 
 
+//原来 lua 版本的如下
+function CreateFromJson(parent, fn)
+    local json_src = GetFileJsonSrc(fn)
+    local uijson = Create_ui_json()
+    local dom_form = uijson_JsonToUIControl(parent, json_src, uijson)
+    uijson.root_view = dom_form
+    return uijson
+end
+
+
 ```
 
 
