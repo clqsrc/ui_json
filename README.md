@@ -157,6 +157,12 @@ function CreateFromJson(parent, fn)
     return uijson
 end
 
+//C# godot 版本倒确实是有 getid 这样的命名，似乎也挺清晰，特别是和具体类关联的时候
+T GetId<T>
+public static T GetId<T>(Node root, string nodeName) where T : Node
+Button GetIdButton(Node root, string nodeName)
+
+
 
 ```
 
