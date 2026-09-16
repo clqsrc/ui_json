@@ -179,6 +179,161 @@ public class ui_json {
 
 ```
 
+又找到一个 C 语言配合 java 的 ndk 版本，这个更完整，以后再和前面的合并整理吧。
+
+文件名为 c_ui_json.h
+
+```
+
+#ifndef _C_UI_JSON_H_
+#define _C_UI_JSON_H_
+
+//统一的 c 语言访问 view 接口 //ios 版应当与这个是同一文件
+//.c 文件里中可以有 ndk 的文件，但 .h 文件里不能有
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+//---------------------------------------------------------------
+
+//#include <jni.h>
+
+#include "base_c.h"
+#include "lstring.h"
+
+
+//全部用 chandle 或者 jobject,jclass 这样的太容易出错了。人为给它们加一个类型，以便编译器验证
+//需要和 java/ios 交互的类型才需要这样做。所以看到参数是结构体的(而不是结构体指针)就知道这是 ui 控件
+struct st_ui_json{
+    chandle handle;
+
+
+    //---------------------------------------------------------------
+    //以下为方便性的函数指针
+
+    //创建一个视图
+    chandle (*CreateView)(chandle parentView);
+
+    //从 json 中创建
+    //ui_json CreateFromJson(chandle parentView, const char * fn);
+
+    //取一个视图
+    chandle (*GetView)(struct st_ui_json uijson, const char * id);
+
+    chandle (*GetParentView)(chandle view);
+
+    //取根视图
+    //chandle ui_json_GetRootView(struct st_ui_json uijson);
+    chandle (*GetRootView)(struct st_ui_json uijson);
+
+    //取根 json
+    //chandle ui_json_GetRootJson(struct st_ui_json uijson);
+    chandle (*GetRootJson)(struct st_ui_json uijson);
+
+
+    //对齐各个控件
+    //void ui_json_AlignControl(struct st_ui_json uijson);
+    void (*AlignControl)(struct st_ui_json uijson);
+
+};
+typedef struct st_ui_json cui_json;
+
+
+//绑定函数
+void ui_json_BindFunctions(cui_json * uijson);
+
+
+//创建一个视图
+chandle CreateView(chandle parentView);
+
+chandle UI_CreateViewClass(chandle parentView, const char * ui_class);
+
+//从 json 中创建
+//cui_json CreateFromJson_(chandle parentView, const char * fn);
+cui_json UI_CreateFromJson(chandle parentView, const char * fn);
+
+//一般的操作都得到的是短期局部引用，要得到永久可用的指针，在 java 下必须用这个转换
+//比如将 getview 的结果赋值给 this 成员变量时
+//要注意的是目前测试情况看 ios 不加这个转换也可以，但是最好是加上去
+chandle long_ref(chandle obj);
+
+//取操作系统语言//"cn", "en"
+lstring * GetOSLanguage(mempool * mem);
+
+//未证实的函数 //检测一个引用是否已经回收
+//int check_ref(JNIEnv* env, jobject obj);
+int check_ref(chandle obj);
+
+//取根视图
+chandle ui_json_GetRootView(cui_json uijson);
+
+//取根 json
+chandle ui_json_GetRootJson(cui_json uijson);
+
+
+//对齐各个控件
+void ui_json_AlignControl(cui_json uijson);
+
+//对齐子控件 //手工修改了控件有没睡的时候才使用，一般不要用
+void ui_json_AlignControlSub(cui_json uijson, chandle view);
+
+//----  虚拟 div 的操作
+void ui_json_UI_Div_SetTxtColor(cui_json uijson, const char * id, const char * hexColor);
+
+void ui_json_UI_Div_SetTxt(cui_json uijson, const char * id, const char * txt);
+
+void ui_json_UI_Div_SetImage(cui_json uijson, const char * id, const char * image);
+
+//关闭软件键盘，iphone6s 肯定是需要的，安卓待测试
+void ui_json_UI_Div_CloseKeyboard(cui_json uijson);
+
+//通过 对象 设置标题 //为了支持动态创建，确实还是需要这样的另一个版本的函数的
+void ui_json_UI_Div_SetTxt_forObj(cui_json uijson, chandle view, const char * txt);
+
+//设置语言包
+void ui_json_UI_SetLanguage(cui_json uijson, const char * lng);
+
+void ui_json_UI_Div_SetTxtColor_forObj(cui_json uijson, chandle view, const char * hexColor);
+
+void ui_json_UI_Div_SetImage_forObj(cui_json uijson, chandle view, const char * fn_image);
+
+//字符串居左边
+void ui_json_UI_Div_SetTxtAlignLeft(cui_json uijson, chandle view);
+
+//取 edit 控件字符串
+lstring * ui_json_UI_GetEditText(chandle view, mempool * mem);
+
+//设置 edit 控件字符串
+lstring * ui_json_UI_SetEditText(chandle view, const char * text);
+
+//设置 edit 为密码框
+lstring * ui_json_UI_SetEditPass(chandle view, int as_pass);
+
+//设置圆角
+void ui_json_UI_Div_SetRadius_forObj(cui_json uijson, chandle view, const char * radius);
+
+//ndk 版本，找不到函数声明的话不会报错，但在运行时直接崩溃！！！
+lstring * java_UI_LG(const char * key, const char * cn_ref, mempool * mem);
+
+//----  虚拟 div 的操作 _end;
+
+//设置单实例定时器，目前只是给 lua 用的
+void ui_json_UI_SetOnTime(cint64 func_c);
+
+//---------------------------------------------------------------
+
+#ifdef __cplusplus
+}
+#endif
+
+
+
+#endif
+
+```
+
+
 
 
 --------------------------------------------------------
