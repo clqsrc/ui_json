@@ -162,7 +162,20 @@ T GetId<T>
 public static T GetId<T>(Node root, string nodeName) where T : Node
 Button GetIdButton(Node root, string nodeName)
 
+//--
+意外 :)
+看到以前的 java 版本有这个一个
 
+public class ui_json {
+
+    //根据控件的 id 取得控件
+    public View GetView(String _id)
+    {
+        return this.nodes.get(_id);
+    }//
+...
+
+似乎确实更合理 :)
 
 ```
 
