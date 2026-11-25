@@ -333,6 +333,42 @@ void ui_json_UI_SetOnTime(cint64 func_c);
 
 ```
 
+--------------------------------------------------------
+** 应该放弃的接口 **
+
+1.主要是 view 大小在 html 环境下不一定能取到
+
+```
+
+//新代码最高用这个指定高度的版本
+function UI_AlignTop_(handle: VViewHandle, height: number): void {
+    handle.style.left = "0px";
+    handle.style.top = "0px";
+    handle.style.width = "100%";
+    handle.style.height = `${height}px`;
+}//
+
+/**
+ * UI_AlignTop：贴父顶部，横向铺满，**保留自身原有高度**
+ * @param handle 视图句柄
+ */
+function UI_AlignTop(handle: VViewHandle): void {
+
+    // 强制触发一次布局，减少append后马上读得到0的概率
+    //handle.getBoundingClientRect();
+
+    const h = handle.offsetHeight;  // offsetHeight 在布局未完成时可能会是 0 ,所以理论上 delphi 的这种 api 是有
+    //缺陷的，最好是用 UI_AlignTop_() 这种指定高度的版本
+
+    handle.style.left = "0px";
+    handle.style.top = "0px";
+    handle.style.width = "100%";
+    handle.style.height = `${h}px`;
+}//
+
+```
+
+
 
 
 
